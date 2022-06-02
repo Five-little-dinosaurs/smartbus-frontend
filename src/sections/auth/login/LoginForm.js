@@ -46,7 +46,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="username"
             type="email"
-            label="Email address"
+            label="账号"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
@@ -56,7 +56,7 @@ export default function LoginForm() {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            label="密码"
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -75,16 +75,19 @@ export default function LoginForm() {
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
           <FormControlLabel
             control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
-            label="Remember me"
+            label="记住我"
           />
 
           <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
-            Forgot password?
+            忘记密码?
           </Link>
         </Stack>
 
-        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-          Login
+        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting} onClick={()=> {
+          navigate('/manage/app');
+          // window.location.href='/manage/app';
+        }}>
+          登录
         </LoadingButton>
       </Form>
     </FormikProvider>
