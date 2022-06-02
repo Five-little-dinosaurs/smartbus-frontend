@@ -1,13 +1,13 @@
 import {filter, sample} from 'lodash';
-import { sentenceCase } from 'change-case';
+// import { sentenceCase } from 'change-case';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
     Card,
     Table,
     Stack,
-    Avatar,
+    // Avatar,
     Button,
     Checkbox,
     TableRow,
@@ -26,7 +26,7 @@ import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
 import BusMoreMenu from "../sections/@dashboard/bus/BusMoreMenu";
@@ -42,7 +42,7 @@ const TABLE_HEAD = [
     { id: '' },
 ];
 
-const busLists = [...Array(24)].map((_, index) => ({
+const busLists = [...Array(24)].map(() => ({
     id: faker.datatype.uuid(),
     // avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`,
     name: sample(['59路','38路','3路']),
@@ -159,7 +159,7 @@ export default function Bus() {
     const isUserNotFound = filteredUsers.length === 0;
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        // const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console,camelcase
     };
 

@@ -1,7 +1,7 @@
 import { Scene, PointLayer, LineLayer } from '@antv/l7';
 import { GaodeMap } from '@antv/l7-maps';
 // import AMapLoader from '@amap/amap-jsapi-loader';
-import {Box, Button, Card, TextField} from "@mui/material";
+import {Box, Button, TextField} from "@mui/material";
 import {useEffect, useState} from "react";
 
 
@@ -169,7 +169,7 @@ export default function Busdetail() {
     useEffect(()=>{
         const gpsRes = {R: 120.19247000000001, Q: 35.951667};
         showBus(gpsRes);
-    },[]);
+    },[showBus]);
     return (
         <>
             <TextField onChange={(e)=> {
