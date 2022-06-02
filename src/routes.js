@@ -13,7 +13,7 @@ import Register from './pages/Register';
 import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Busdetail from './pages/Busdetail';
-// ----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 
 export default function Router() {
   return useRoutes([
