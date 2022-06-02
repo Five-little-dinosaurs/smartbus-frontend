@@ -9,6 +9,7 @@ export default function Busdetail() {
     const [bus, setBus] = useState(59);
     const [scene, setScene] = useState(null);
     // const [gps, setGps] = useState({R: 120.19247000000001, Q: 35.951667});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     function showBus(gps){
         const scene = new Scene({
             id: 'map',

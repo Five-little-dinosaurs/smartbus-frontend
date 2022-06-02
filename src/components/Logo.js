@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { useTheme } from '@mui/material/styles';
+// import { useTheme } from '@mui/material/styles';
 // import { Box } from '@mui/material';
 import logoimg from '../images/logo.png';
 // ----------------------------------------------------------------------
 
 Logo.propTypes = {
-  disabledLink: PropTypes.bool,
-  sx: PropTypes.object,
+  disabledLink: PropTypes.bool
+  // sx: PropTypes.object,
 };
 
 export default function Logo({ disabledLink = false }) {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   // const PRIMARY_LIGHT = theme.palette.primary.light;
   //
