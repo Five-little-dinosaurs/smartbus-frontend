@@ -54,7 +54,7 @@ jobs:
       env:
         # 私钥
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        # scp参数 t
+        # scp参数
         ARGS: "-avzr --delete"
         # 源目录，编译后生成的文件目录
         SOURCE: "./build/"
