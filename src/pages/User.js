@@ -1,5 +1,4 @@
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
@@ -7,7 +6,6 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
   Checkbox,
   TableRow,
@@ -71,9 +69,9 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function User() {
-  const [files, setFiles] = useState([]);
+  // const [files, setFiles] = useState([]);
 
-  const [base64, setBase64] = useState('');
+  // const [base64, setBase64] = useState('');
 
   const [page, setPage] = useState(0);
 
@@ -89,13 +87,13 @@ export default function User() {
 
   const [userList, setUserList] = useState([]);
 
-  const [user, setUser] = useState({
-    name: '',
-    region: '',
-    thing: '',
-    punishment: '',
-    status: ''
-  })
+  // const [user, setUser] = useState({
+  //   name: '',
+  //   region: '',
+  //   thing: '',
+  //   punishment: '',
+  //   status: ''
+  // })
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -146,12 +144,12 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
 
-  const handleAddFile = (err, file) => {
-    console.log(file?.getFileEncodeDataURL());
-    setBase64(file?.getFileEncodeDataURL());
-    console.log(base64);
-    // console.log(base64);
-  };
+  // const handleAddFile = (err, file) => {
+  //   console.log(file?.getFileEncodeDataURL());
+  //   setBase64(file?.getFileEncodeDataURL());
+  //   console.log(base64);
+  //   // console.log(base64);
+  // };
   useEffect(()=>{
     axios.get(`${Address}/user/userdetail`).then((res)=>{
       console.log(res.data);
