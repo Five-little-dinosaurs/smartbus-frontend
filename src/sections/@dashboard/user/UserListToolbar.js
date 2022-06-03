@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
 // component
+import axios from "axios";
 import Iconify from '../../../components/Iconify';
+import {Address} from "../../../store/Address";
 
 // ----------------------------------------------------------------------
 
@@ -33,9 +35,30 @@ UserListToolbar.propTypes = {
   selected: PropTypes.array,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
+  setSelected: PropTypes.func,
+  name: PropTypes.string,
+  setListInfo: PropTypes.func
 };
 
-export default function UserListToolbar({ selected, filterName, onFilterName }) {
+export default function UserListToolbar({ selected, filterName, onFilterName, setSelected, name, setListInfo }) {
+
+  function deleteInfo() {
+    const queue = [];
+    console.log(name);
+    console.log(selected);
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < selected.length; i++) {
+      queue.push(axios.delete(`${Address}/${name}/${selected[i]}`));
+    }
+    Promise.all(queue).then((res)=>{
+        console.log(res);
+        setSelected([]);
+        axios.get(`${Address}/${name}`).then((res)=>{
+          setListInfo(res.data);
+        })
+    })
+  }
+
   return (
     <RootStyle
       sx={{
@@ -63,7 +86,7 @@ export default function UserListToolbar({ selected, filterName, onFilterName }) 
       )}
 
       {selected.length > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Delete" onClick={()=>{deleteInfo();}}>
           <IconButton>
             <Iconify icon="eva:trash-2-fill" />
           </IconButton>

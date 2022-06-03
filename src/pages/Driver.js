@@ -308,7 +308,7 @@ export default function Driver() {
                 </Stack>
 
                 <Card>
-                    <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+                    <UserListToolbar name='driver' setListInfo={setDriverList} selected={selected} setSelected={setSelected} filterName={filterName} onFilterName={handleFilterByName} />
 
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 800 }}>

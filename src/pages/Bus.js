@@ -286,7 +286,7 @@ export default function Bus() {
                 </Stack>
 
                 <Card>
-                    <UserListToolbar selected={selected} filterName={filterName} onFilterName={handleFilterByName} />
+                    <UserListToolbar setListInfo={setBusLists} name='busroute' selected={selected} setSelected={setSelected} filterName={filterName} onFilterName={handleFilterByName} />
 
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 800 }}>
