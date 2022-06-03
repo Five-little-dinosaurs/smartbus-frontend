@@ -77,7 +77,7 @@ registerPlugin(
 const TABLE_HEAD = [
     { id: '司机', label: '司机', alignRight: false },
     { id: '身份证', label: '身份证', alignRight: false },
-    // { id: '驾驶车辆车牌', label: '驾驶车辆车牌', alignRight: false },
+    { id: '驾驶车辆车牌', label: '驾驶车辆车牌', alignRight: false },
     // { id: 'isVerified', label: 'Verified', alignRight: false },
     // { id: 'status', label: 'Status', alignRight: false },
     { id: '' },
@@ -324,8 +324,8 @@ export default function Driver() {
                                 />
                                 <TableBody>
                                     {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, name, cardNum, photo } = row;
-                                        const isItemSelected = selected.indexOf(name) !== -1;
+                                        const { id, name, cardNum, photo, busNum } = row;
+                                        const isItemSelected = selected.indexOf(id) !== -1;
 
                                         return (
                                             <TableRow
@@ -348,6 +348,7 @@ export default function Driver() {
                                                     </Stack>
                                                 </TableCell>
                                                 <TableCell align="left">{cardNum}</TableCell>
+                                                <TableCell align="left">{busNum}</TableCell>
                                                 {/* <TableCell align="left">{role}</TableCell> */}
                                                 <TableCell align="right">
                                                     <UserMoreMenu />

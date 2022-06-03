@@ -11,8 +11,9 @@ import {
     DialogActions,
     Button,
     TextField,
-    Grid, DialogTitle, Dialog, Box, DialogContent, Stack, Typography
+    Grid, DialogTitle, Dialog, Box, DialogContent
 } from '@mui/material';
+// import { DataGrid } from '@mui/x-data-grid';
 // component
 import Iconify from '../../../components/Iconify';
 import {Address} from "../../../store/Address";
@@ -27,6 +28,7 @@ export default function BusMoreMenu({busId, stateList, setBusLists, busLists}) {
     const [roadOpen, setRoadOpen] = useState(false);
     // eslint-disable-next-line react/prop-types
     const [road, setRoad] = useState(stateList===null? [1] : stateList.split(','));
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -100,18 +102,28 @@ export default function BusMoreMenu({busId, stateList, setBusLists, busLists}) {
                 {/* eslint-disable-next-line react/jsx-no-bind */}
                 <Box component="form" onSubmit={handleSubmit}>
                     <DialogContent>
-                        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                            <Typography variant="h4" gutterBottom>
-                                公交
-                            </Typography>
+                        <Box sx={{ display:'flex', flexDirection:'row'}} >
+                            {/* <Typography variant="h4" gutterBottom> */}
+                            {/*    公交 */}
+                            {/* </Typography> */}
                             <Button variant="contained"  startIcon={<Iconify icon="eva:plus-fill" />} onClick={()=>{
                                 setRoad((road) => [...road, road.length + 1]);
                             }
                             }>
                                 添加
                             </Button>
-                        </Stack>
-                        <Grid container spacing={2}>
+                            <Button variant="contained"
+                                    disabled={road.length===1}
+                                    sx={{ ml: 2 }}
+                                    startIcon={<Iconify icon="eva:minus-fill" />} onClick={()=>{
+                                setRoad(road.slice(0,road.length-1));
+                            }
+                            }>
+                                删除
+                            </Button>
+                        </Box>
+                        <Grid container spacing={2} sx={{ mt: 2 }}>
+                            {/* <DataGrid checkboxSelection hideFooter rows={rows} columns={columns} /> */}
                             {road.map((index)=>(
                                     <Grid item xs={12} key={index}>
                                         <TextField

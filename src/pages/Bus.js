@@ -182,19 +182,30 @@ export default function Bus() {
                 setBusInfoDialog(false);
             })
         })
+        axios.put(`${Address}/driver`,{id:busInfo.driverId,busNum:busInfo.number}).then((res)=>{
+            console.log(res);
+        });
     }
 
     useEffect(()=>{
         axios.get(`${Address}/driver`).then((res)=>{
+            console.log(res);
+            const tmp = [];
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < res.data.length; i++) {
+                if (res.data[i].busNum===null || res.data[i].busNum.length===0){
+                    tmp.push(res.data[i]);
+                }
+            }
             // console.log(res.data);
-            setDriverList(res.data);
+            setDriverList(tmp);
         })
         axios.get(`${Address}/busroute`).then((res)=>{
             // eslint-disable-next-line no-plusplus
             for (let i = 0; i < res.data.length; i++) {
                 res.data[i].status = sample(['正常','异常']);
             }
-            console.log(res.data);
+            // console.log(res.data);
             setBusLists(res.data);
         })
     },[]);
@@ -275,7 +286,7 @@ export default function Bus() {
                 </Stack>
 
                 <Card>
-                    <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+                    <UserListToolbar selected={selected} filterName={filterName} onFilterName={handleFilterByName} />
 
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 800 }}>

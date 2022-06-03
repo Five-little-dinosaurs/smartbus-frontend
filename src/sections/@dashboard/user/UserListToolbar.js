@@ -30,24 +30,24 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 UserListToolbar.propTypes = {
-  numSelected: PropTypes.number,
+  selected: PropTypes.array,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+export default function UserListToolbar({ selected, filterName, onFilterName }) {
   return (
     <RootStyle
       sx={{
-        ...(numSelected > 0 && {
+        ...(selected.length > 0 && {
           color: 'primary.main',
           bgcolor: 'primary.lighter',
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {selected.length > 0 ? (
         <Typography component="div" variant="subtitle1">
-          {numSelected} selected
+          {selected.length} selected
         </Typography>
       ) : (
         <SearchStyle
@@ -62,7 +62,7 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
         />
       )}
 
-      {numSelected > 0 ? (
+      {selected.length > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
             <Iconify icon="eva:trash-2-fill" />
