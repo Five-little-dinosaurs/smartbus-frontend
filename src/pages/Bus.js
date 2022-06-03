@@ -167,7 +167,7 @@ export default function Bus() {
     const isUserNotFound = filteredUsers.length === 0;
 
     function insertBus(){
-        console.log(busInfo);
+        // console.log(busInfo);
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < driverList.length; i++) {
             if(driverList[i].name === busInfo.driverId){
@@ -182,37 +182,71 @@ export default function Bus() {
                         res.data[i].status = sample(['正常','异常']);
                     }
                     setBusLists(res.data);
-                    setBusInfoDialog(false);
                 })
             })
-            axios.put(`${Address}/driver`,{id:busInfo.driverId,busNum:busInfo.number}).then((res)=>{
-                console.log(res);
+            axios.put(`${Address}/driver`,{id:busInfo.driverId,busNum:busInfo.number}).then(()=>{
+                // console.log(res);
+                axios.get(`${Address}/driver`).then((res)=>{
+                    console.log(res);
+                    const tmp = [];
+                    // eslint-disable-next-line no-plusplus
+                    for (let i = 0; i < res.data.length; i++) {
+                        if (res.data[i].busNum===null || res.data[i].busNum.length===0){
+                            tmp.push(res.data[i]);
+                        }
+                    }
+                    console.log(tmp);
+                    setDriverList(tmp);
+                })
             });
         }
         else {
-            axios.put(`${Address}/busroute`,busInfo).then(()=>{
-                axios.get(`${Address}/busroute`).then((res)=>{
-                    // eslint-disable-next-line no-plusplus
-                    for (let i = 0; i < res.data.length; i++) {
-                        res.data[i].status = sample(['正常','异常']);
-                    }
-                    setBusLists(res.data);
-                    setBusInfoDialog(false);
+            axios.put(`${Address}/driver/updateByBusNum`,{busNum: busInfo.number}).then(()=>{
+                axios.put(`${Address}/busroute`,busInfo).then(()=>{
+                    axios.get(`${Address}/busroute`).then((res)=>{
+                        // eslint-disable-next-line no-plusplus
+                        for (let i = 0; i < res.data.length; i++) {
+                            res.data[i].status = sample(['正常','异常']);
+                        }
+                        setBusLists(res.data);
+                    })
                 })
-            })
-            axios.put(`${Address}/driver`,{id:busInfo.driverId,busNum:busInfo.number}).then((res)=>{
-                console.log(res);
+                axios.put(`${Address}/driver`,{id:busInfo.driverId,busNum:busInfo.number}).then(()=>{
+                    // console.log(res);
+                    axios.get(`${Address}/driver`).then((res)=>{
+                        console.log(res);
+                        const tmp = [];
+                        // eslint-disable-next-line no-plusplus
+                        for (let i = 0; i < res.data.length; i++) {
+                            if (res.data[i].busNum===null || res.data[i].busNum.length===0){
+                                tmp.push(res.data[i]);
+                            }
+                        }
+                        console.log(tmp);
+                        setDriverList(tmp);
+                    })
+                });
             });
+            // console.log(busInfo);
+
         }
+
+        setBusInfoDialog(false);
+        setBusInfo({});
 
     }
     function overwriteBusInfo(busId) {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < busLists.length; i++) {
             if(busLists[i].id === busId){
+                busInfo.id=busLists[i].id;
                 busInfo.name=busLists[i].name;
                 busInfo.driverId=busLists[i].driverName;
                 busInfo.number=busLists[i].number;
+                busInfo.stateList=busLists[i].stateList;
+                // console.log(busInfo);
+                setBusInfo(busInfo);
+                break;
             }
         }
         setEditState(false);
@@ -220,7 +254,7 @@ export default function Bus() {
     }
     useEffect(()=>{
         axios.get(`${Address}/driver`).then((res)=>{
-            console.log(res);
+            // console.log(res);
             const tmp = [];
             // eslint-disable-next-line no-plusplus
             for (let i = 0; i < res.data.length; i++) {
@@ -235,11 +269,15 @@ export default function Bus() {
             // eslint-disable-next-line no-plusplus
             for (let i = 0; i < res.data.length; i++) {
                 res.data[i].status = sample(['正常','异常']);
-                if (res.data[i].driverId===0){
-                    res.data[i].driverName=null;
-                }
+                // if (res.data[i].driverId===0){
+                //     res.data[i].driverName=null;
+                // } else {
+                //     axios.get(`${Address}/driver/${res.data[i].driverId}`).then((re)=>{
+                //         res.data[i].driverName=re.data[0].name;
+                //     })
+                // }
             }
-            console.log(res.data);
+            // console.log(res.data);
             setBusLists(res.data);
         })
     },[]);

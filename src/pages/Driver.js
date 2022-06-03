@@ -34,7 +34,7 @@ import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
 import FilePondPluginImageResize from 'filepond-plugin-image-resize';
 import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import SearchNotFound from '../components/SearchNotFound';
 import Scrollbar from '../components/Scrollbar';
 import Page from '../components/Page';
@@ -80,7 +80,7 @@ const TABLE_HEAD = [
     { id: '驾驶车辆车牌', label: '驾驶车辆车牌', alignRight: false },
     // { id: 'isVerified', label: 'Verified', alignRight: false },
     // { id: 'status', label: 'Status', alignRight: false },
-    { id: '' },
+    // { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -350,9 +350,7 @@ export default function Driver() {
                                                 <TableCell align="left">{cardNum}</TableCell>
                                                 <TableCell align="left">{busNum}</TableCell>
                                                 {/* <TableCell align="left">{role}</TableCell> */}
-                                                <TableCell align="right">
-                                                    <UserMoreMenu />
-                                                </TableCell>
+
                                             </TableRow>
                                         );
                                     })}

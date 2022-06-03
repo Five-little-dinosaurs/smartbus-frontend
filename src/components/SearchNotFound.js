@@ -12,11 +12,11 @@ export default function SearchNotFound({ searchQuery = '', ...other }) {
   return (
     <Paper {...other}>
       <Typography gutterBottom align="center" variant="subtitle1">
-        Not found
+        查找失败
       </Typography>
       <Typography variant="body2" align="center">
-        No results found for &nbsp;
-        <strong>&quot;{searchQuery}&quot;</strong>. Try checking for typos or using complete words.
+        找不到包含 &nbsp;
+        <strong>&quot;{searchQuery}&quot;</strong> 的结果. 请检查或查询别的关键字
       </Typography>
     </Paper>
   );
