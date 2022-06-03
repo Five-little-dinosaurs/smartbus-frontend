@@ -7,10 +7,10 @@ const users = [...Array(24)].map((_, index) => ({
   id: faker.datatype.uuid(),
   avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`,
   name: faker.name.findName(),
-  company: faker.company.companyName(),
+  region: faker.company.companyName(),
   isVerified: faker.datatype.boolean(),
-  status: sample(['active', 'banned']),
-  role: sample([
+  status: sample(['已受理', '未受理']),
+  feedback: sample([
     'Leader',
     'Hr Manager',
     'UI Designer',
