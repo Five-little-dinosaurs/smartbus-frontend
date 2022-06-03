@@ -202,6 +202,9 @@ export default function Bus() {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={driver.map((option)=> option.name)}
+                                    onChange={(event, newValue) => {
+                                        console.log(newValue);
+                                    }}
                                     sx={{ width: 300 }}
                                     renderInput={(params) => <TextField {...params} label="公交车司机" />}
                                 />

@@ -1,7 +1,7 @@
-import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
+import {filter, sample} from 'lodash';
+// import { sentenceCase } from 'change-case';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
     Card,
@@ -16,26 +16,68 @@ import {
     Container,
     Typography,
     TableContainer,
-    TablePagination,
+    TablePagination, Dialog, DialogTitle, Box, DialogContent, TextField, DialogActions,
 } from '@mui/material';
 // components
-import Page from '../components/Page';
-import Label from '../components/Label';
-import Scrollbar from '../components/Scrollbar';
-import Iconify from '../components/Iconify';
-import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import {faker} from "@faker-js/faker";
+// import Label from '../components/Label';
 // mock
-import USERLIST from '../_mock/user';
+// import USERLIST from '../_mock/user';
+import { FilePond, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
+import FilePondPluginImageResize from 'filepond-plugin-image-resize';
+import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import SearchNotFound from '../components/SearchNotFound';
+import Scrollbar from '../components/Scrollbar';
+import Page from '../components/Page';
+import Iconify from '../components/Iconify';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+
+registerPlugin(
+    FilePondPluginImageExifOrientation,
+    FilePondPluginImagePreview,
+    FilePondPluginFileValidateSize,
+    FilePondPluginFileValidateType,
+    FilePondPluginFileEncode,
+    FilePondPluginImageResize,
+    FilePondPluginImageCrop,
+    FilePondPluginImageTransform
+);
 
 // ----------------------------------------------------------------------
-
+const USERLIST = [...Array(24)].map((_, index) => ({
+    id: faker.datatype.uuid(),
+    avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`,
+    name: faker.name.findName(),
+    company: faker.company.companyName(),
+    // isVerified: faker.datatype.boolean(),
+    // status: sample(['active', 'banned']),
+    role: sample([
+        'Leader',
+        'Hr Manager',
+        'UI Designer',
+        'UX Designer',
+        'UI/UX Designer',
+        'Project Manager',
+        'Backend Developer',
+        'Full Stack Designer',
+        'Front End Developer',
+        'Full Stack Developer',
+    ]),
+}));
 const TABLE_HEAD = [
-    { id: 'name', label: 'Name', alignRight: false },
-    { id: 'company', label: 'Company', alignRight: false },
-    { id: 'role', label: 'Role', alignRight: false },
-    { id: 'isVerified', label: 'Verified', alignRight: false },
-    { id: 'status', label: 'Status', alignRight: false },
+    { id: '司机', label: '司机', alignRight: false },
+    { id: '身份证', label: '身份证', alignRight: false },
+    { id: '驾驶车辆车牌', label: '驾驶车辆车牌', alignRight: false },
+    // { id: 'isVerified', label: 'Verified', alignRight: false },
+    // { id: 'status', label: 'Status', alignRight: false },
     { id: '' },
 ];
 
@@ -82,6 +124,11 @@ export default function Driver() {
     const [filterName, setFilterName] = useState('');
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const [driverInfoDialog, setDriverInfoDialog] = useState(false);
+
+    const [files, setFiles] = useState([]);
+    const [base64, setBase64] = useState('');
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -132,15 +179,94 @@ export default function Driver() {
 
     const isUserNotFound = filteredUsers.length === 0;
 
+    const handleAddFile = (err, file) => {
+        console.log(file?.getFileEncodeDataURL());
+        setBase64(file?.getFileEncodeDataURL());
+        console.log(base64);
+    };
+    const handleSubmit = () => {
+        // event.preventDefault();
+        // const data = new FormData(event.currentTarget);
+        // eslint-disable-next-line no-console,camelcase
+    };
     return (
         <Page title="User">
+            <Dialog open={driverInfoDialog} onClose={()=>{
+                setDriverInfoDialog(false);
+                setFiles([]);
+            }}
+            >
+                <DialogTitle>填写信息</DialogTitle>
+                {/* eslint-disable-next-line react/jsx-no-bind */}
+                    <DialogContent>
+                        <Box sx={{ display: 'flex', flexDirection:'row'}}>
+                            <Box sx={{ width:130, height: 130}}>
+                                <Box sx={{ mt: 6}}>
+                                    <FilePond
+                                        files={files}
+                                        onaddfile={handleAddFile}
+                                        onupdatefiles={setFiles}
+                                        allowMultiple={false}
+                                        stylePanelLayout="compact circle"
+                                        imageResizeTargetWidth={120}
+                                        imageResizeTargetHeight={120}
+                                        imagePreviewHeight={70}
+                                        imageCropAspectRatio="1:1"
+                                        maxFileSize="5MB"
+                                        acceptedFileTypes={['image/png', 'image/jpeg']}
+                                        maxFiles={1}
+                                        name="avatar"
+                                        labelIdle='上传证件照'
+                                    />
+                                </Box>
+
+                            </Box>
+                            <Box sx={{ margin: 5, display:'flex', flexDirection:'column'}}>
+                                <Box>
+                                    <TextField
+                                        autoFocus
+                                        margin="dense"
+                                        id="name"
+                                        label="姓名"
+                                        name="productName"
+                                        fullWidth
+                                        variant="standard"
+                                    />
+                                </Box>
+                                <Box>
+                                    <TextField
+                                        autoFocus
+                                        margin="dense"
+                                        id="name"
+                                        label="身份证"
+                                        name="productName"
+                                        fullWidth
+                                        variant="standard"
+                                    />
+                                </Box>
+                            </Box>
+                        </Box>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={()=>{
+                            setDriverInfoDialog(false);
+                            setFiles([]);
+                        }}>取消</Button>
+                        {/* eslint-disable-next-line react/jsx-no-bind */}
+                        <Button type="submit" onClick={()=>handleSubmit()}>确认</Button>
+                    </DialogActions>
+            </Dialog>
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        User
+                        司机信息
                     </Typography>
-                    <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
-                        New User
+                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}
+                            onClick={()=>{
+                                setDriverInfoDialog(true);
+                            }}
+                    >
+                        添加司机
                     </Button>
                 </Stack>
 
@@ -161,7 +287,7 @@ export default function Driver() {
                                 />
                                 <TableBody>
                                     {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                                        const { id, name, role, company, avatarUrl } = row;
                                         const isItemSelected = selected.indexOf(name) !== -1;
 
                                         return (
@@ -186,13 +312,6 @@ export default function Driver() {
                                                 </TableCell>
                                                 <TableCell align="left">{company}</TableCell>
                                                 <TableCell align="left">{role}</TableCell>
-                                                <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                                                <TableCell align="left">
-                                                    <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
-                                                        {sentenceCase(status)}
-                                                    </Label>
-                                                </TableCell>
-
                                                 <TableCell align="right">
                                                     <UserMoreMenu />
                                                 </TableCell>
