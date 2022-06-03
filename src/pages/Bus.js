@@ -115,6 +115,8 @@ export default function Bus() {
         number:'',
         driverId:''
     })
+
+    const [editState, setEditState] = useState(true);
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -172,21 +174,50 @@ export default function Bus() {
                 busInfo.driverId=driverList[i].id;
             }
         }
-        axios.post(`${Address}/busroute`,busInfo).then(()=>{
-            axios.get(`${Address}/busroute`).then((res)=>{
-                // eslint-disable-next-line no-plusplus
-                for (let i = 0; i < res.data.length; i++) {
-                    res.data[i].status = sample(['正常','异常']);
-                }
-                setBusLists(res.data);
-                setBusInfoDialog(false);
+        if (editState){
+            axios.post(`${Address}/busroute`,busInfo).then(()=>{
+                axios.get(`${Address}/busroute`).then((res)=>{
+                    // eslint-disable-next-line no-plusplus
+                    for (let i = 0; i < res.data.length; i++) {
+                        res.data[i].status = sample(['正常','异常']);
+                    }
+                    setBusLists(res.data);
+                    setBusInfoDialog(false);
+                })
             })
-        })
-        axios.put(`${Address}/driver`,{id:busInfo.driverId,busNum:busInfo.number}).then((res)=>{
-            console.log(res);
-        });
-    }
+            axios.put(`${Address}/driver`,{id:busInfo.driverId,busNum:busInfo.number}).then((res)=>{
+                console.log(res);
+            });
+        }
+        else {
+            axios.put(`${Address}/busroute`,busInfo).then(()=>{
+                axios.get(`${Address}/busroute`).then((res)=>{
+                    // eslint-disable-next-line no-plusplus
+                    for (let i = 0; i < res.data.length; i++) {
+                        res.data[i].status = sample(['正常','异常']);
+                    }
+                    setBusLists(res.data);
+                    setBusInfoDialog(false);
+                })
+            })
+            axios.put(`${Address}/driver`,{id:busInfo.driverId,busNum:busInfo.number}).then((res)=>{
+                console.log(res);
+            });
+        }
 
+    }
+    function overwriteBusInfo(busId) {
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < busLists.length; i++) {
+            if(busLists[i].id === busId){
+                busInfo.name=busLists[i].name;
+                busInfo.driverId=busLists[i].driverName;
+                busInfo.number=busLists[i].number;
+            }
+        }
+        setEditState(false);
+        setBusInfoDialog(true);
+    }
     useEffect(()=>{
         axios.get(`${Address}/driver`).then((res)=>{
             console.log(res);
@@ -204,8 +235,11 @@ export default function Bus() {
             // eslint-disable-next-line no-plusplus
             for (let i = 0; i < res.data.length; i++) {
                 res.data[i].status = sample(['正常','异常']);
+                if (res.data[i].driverId===0){
+                    res.data[i].driverName=null;
+                }
             }
-            // console.log(res.data);
+            console.log(res.data);
             setBusLists(res.data);
         })
     },[]);
@@ -213,6 +247,7 @@ export default function Bus() {
         <Page title="Bus">
             <Dialog open={busInfoDialog} onClose={()=>{
                 setBusInfoDialog(false);
+                setBusInfo({});
             }}
                 fullWidth
             >
@@ -225,6 +260,7 @@ export default function Bus() {
                                     id="name"
                                     label="公交线路"
                                     name="productName"
+                                    defaultValue={busInfo.name}
                                     fullWidth
                                     variant="standard"
                                     onChange={(event)=>{
@@ -241,6 +277,7 @@ export default function Bus() {
                                     label="公交车车牌"
                                     name="productName"
                                     fullWidth
+                                    defaultValue={busInfo.number}
                                     variant="standard"
                                     onChange={(event)=>{
                                         const tmp = busInfo;
@@ -254,6 +291,7 @@ export default function Bus() {
                                     disablePortal
                                     id="combo-box-demo"
                                     options={driverList.map((option)=> option.name)}
+                                    defaultValue={busInfo.driverId}
                                     onChange={(event, newValue) => {
                                         const tmp = busInfo;
                                         tmp.driverId = newValue;
@@ -268,6 +306,7 @@ export default function Bus() {
                     <DialogActions>
                         <Button onClick={()=>{
                             setBusInfoDialog(false);
+                            setBusInfo({});
                         }}>取消</Button>
                         {/* eslint-disable-next-line react/jsx-no-bind */}
                         <Button type="submit" onClick={()=>insertBus()}>确认</Button>
@@ -280,6 +319,7 @@ export default function Bus() {
                     </Typography>
                     <Button variant="contained"  startIcon={<Iconify icon="eva:plus-fill" />} onClick={()=>{
                         setBusInfoDialog(true);
+                        setEditState(true);
                     }}>
                         添加公交
                     </Button>
@@ -329,7 +369,7 @@ export default function Bus() {
                                                 <TableCell align="left">{name}</TableCell>
                                                 <TableCell align="left">{number}</TableCell>
                                                 <TableCell align="left">{driverName}</TableCell>
-                                                <TableCell align="left">{driverId}</TableCell>
+                                                <TableCell align="left">{driverId===0? '' : driverId}</TableCell>
                                                 <TableCell align="left">
                                                     <Label variant="ghost"
                                                            color={(status === '异常' && 'error') || 'success'}>
@@ -338,7 +378,8 @@ export default function Bus() {
                                                 </TableCell>
 
                                                 <TableCell align="right">
-                                                    <BusMoreMenu busId={id} stateList={stateList} setBusLists={setBusLists} busLists={busLists}/>
+                                                    {/* eslint-disable-next-line react/jsx-no-bind */}
+                                                    <BusMoreMenu overwriteBusInfo={overwriteBusInfo} busId={id} stateList={stateList} setBusLists={setBusLists} busLists={busLists}/>
                                                 </TableCell>
                                             </TableRow>
                                         );

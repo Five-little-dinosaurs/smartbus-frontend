@@ -1,7 +1,7 @@
 import { Scene, PointLayer, LineLayer } from '@antv/l7';
 import { GaodeMap } from '@antv/l7-maps';
 // import AMapLoader from '@amap/amap-jsapi-loader';
-import {Box, Button, Card, Stack, TextField, Typography} from "@mui/material";
+import {Box, Button, Card, Container, Stack, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import {Autocomplete} from "@mui/lab";
 import axios from "axios";
@@ -195,6 +195,7 @@ export default function Busdetail() {
     },[]);
     return (
         <Page title="BusDetail">
+            <Container>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                 <Typography variant="h4" gutterBottom>
                     公交详细数据
@@ -285,6 +286,7 @@ export default function Busdetail() {
                     </Box>
                 </Card>
             </Box>
+            </Container>
         </Page>
     );
 }

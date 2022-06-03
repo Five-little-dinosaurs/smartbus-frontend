@@ -13,6 +13,7 @@ import {
     TextField,
     Grid, DialogTitle, Dialog, Box, DialogContent
 } from '@mui/material';
+import {SettingsApplicationsOutlined} from '@mui/icons-material';
 // import { DataGrid } from '@mui/x-data-grid';
 // component
 import Iconify from '../../../components/Iconify';
@@ -22,7 +23,7 @@ import {Address} from "../../../store/Address";
 // ----------------------------------------------------------------------
 
 // eslint-disable-next-line react/prop-types
-export default function BusMoreMenu({busId, stateList, setBusLists, busLists}) {
+export default function BusMoreMenu({overwriteBusInfo, busId, stateList, setBusLists, busLists}) {
     const ref = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [roadOpen, setRoadOpen] = useState(false);
@@ -77,11 +78,13 @@ export default function BusMoreMenu({busId, stateList, setBusLists, busLists}) {
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-                <MenuItem sx={{ color: 'text.secondary' }}>
-                    <ListItemIcon>
-                        <Iconify icon="eva:trash-2-outline" width={24} height={24} />
+                <MenuItem sx={{ color: 'text.secondary' }} onClick={()=>{
+                    overwriteBusInfo(busId);
+                }}>
+                    <ListItemIcon sx={{ width: 24, height: 24 }}>
+                        <SettingsApplicationsOutlined/>
                     </ListItemIcon>
-                    <ListItemText primary="删除" primaryTypographyProps={{ variant: 'body2' }} />
+                    <ListItemText primary="修改信息" primaryTypographyProps={{ variant: 'body2' }} />
                 </MenuItem>
 
                 <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }} onClick={()=> setRoadOpen(true)}>
