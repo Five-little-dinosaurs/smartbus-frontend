@@ -1,8 +1,9 @@
-import {filter, sample} from 'lodash';
+import {filter} from 'lodash';
 // import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
 // material
+import axios from "axios";
 import {
     Card,
     Table,
@@ -19,7 +20,7 @@ import {
     TablePagination, Dialog, DialogTitle, Box, DialogContent, TextField, DialogActions,
 } from '@mui/material';
 // components
-import {faker} from "@faker-js/faker";
+// import {faker} from "@faker-js/faker";
 // import Label from '../components/Label';
 // mock
 // import USERLIST from '../_mock/user';
@@ -39,6 +40,7 @@ import Scrollbar from '../components/Scrollbar';
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import {Address} from "../store/Address";
 
 registerPlugin(
     FilePondPluginImageExifOrientation,
@@ -52,30 +54,30 @@ registerPlugin(
 );
 
 // ----------------------------------------------------------------------
-const USERLIST = [...Array(24)].map((_, index) => ({
-    id: faker.datatype.uuid(),
-    avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`,
-    name: faker.name.findName(),
-    company: faker.company.companyName(),
-    // isVerified: faker.datatype.boolean(),
-    // status: sample(['active', 'banned']),
-    role: sample([
-        'Leader',
-        'Hr Manager',
-        'UI Designer',
-        'UX Designer',
-        'UI/UX Designer',
-        'Project Manager',
-        'Backend Developer',
-        'Full Stack Designer',
-        'Front End Developer',
-        'Full Stack Developer',
-    ]),
-}));
+// const USERLIST = [...Array(24)].map((_, index) => ({
+//     id: faker.datatype.uuid(),
+//     avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`,
+//     name: faker.name.findName(),
+//     company: faker.company.companyName(),
+//     // isVerified: faker.datatype.boolean(),
+//     // status: sample(['active', 'banned']),
+//     role: sample([
+//         'Leader',
+//         'Hr Manager',
+//         'UI Designer',
+//         'UX Designer',
+//         'UI/UX Designer',
+//         'Project Manager',
+//         'Backend Developer',
+//         'Full Stack Designer',
+//         'Front End Developer',
+//         'Full Stack Developer',
+//     ]),
+// }));
 const TABLE_HEAD = [
     { id: '司机', label: '司机', alignRight: false },
     { id: '身份证', label: '身份证', alignRight: false },
-    { id: '驾驶车辆车牌', label: '驾驶车辆车牌', alignRight: false },
+    // { id: '驾驶车辆车牌', label: '驾驶车辆车牌', alignRight: false },
     // { id: 'isVerified', label: 'Verified', alignRight: false },
     // { id: 'status', label: 'Status', alignRight: false },
     { id: '' },
@@ -130,6 +132,12 @@ export default function Driver() {
     const [files, setFiles] = useState([]);
     const [base64, setBase64] = useState('');
 
+    const [driverList, setDriverList] = useState([]);
+
+    const [driver, setDriver] = useState({
+        name: '',
+        cardNum: ''
+    })
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -138,7 +146,7 @@ export default function Driver() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = USERLIST.map((n) => n.name);
+            const newSelecteds = driverList.map((n) => n.id);
             setSelected(newSelecteds);
             return;
         }
@@ -173,22 +181,43 @@ export default function Driver() {
         setFilterName(event.target.value);
     };
 
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - driverList.length) : 0;
 
-    const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+    const filteredUsers = applySortFilter(driverList, getComparator(order, orderBy), filterName);
 
     const isUserNotFound = filteredUsers.length === 0;
 
     const handleAddFile = (err, file) => {
         console.log(file?.getFileEncodeDataURL());
         setBase64(file?.getFileEncodeDataURL());
-        console.log(base64);
+        // console.log(base64);
     };
-    const handleSubmit = () => {
+    const insertDriver = () => {
+        console.log(driver);
+        console.log(base64);
+        const tmp={
+            name:driver.name,
+            cardNum:driver.cardNum,
+            photo:base64
+        }
+        axios.post(`${Address}/driver`,tmp).then((res)=>{
+            console.log(res);
+            axios.get(`${Address}/driver`).then((res)=>{
+                // console.log(res.data);
+                setDriverList(res.data);
+                setDriverInfoDialog(false);
+            })
+        })
         // event.preventDefault();
         // const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console,camelcase
     };
+    useEffect(()=>{
+        axios.get(`${Address}/driver`).then((res)=>{
+            console.log(res.data);
+            setDriverList(res.data);
+        })
+    },[]);
     return (
         <Page title="User">
             <Dialog open={driverInfoDialog} onClose={()=>{
@@ -199,7 +228,7 @@ export default function Driver() {
                 <DialogTitle>填写信息</DialogTitle>
                 {/* eslint-disable-next-line react/jsx-no-bind */}
                     <DialogContent>
-                        <Box sx={{ display: 'flex', flexDirection:'row'}}>
+                        <Box sx={{ display: 'flex', flexDirection:'row'}} >
                             <Box sx={{ width:130, height: 130}}>
                                 <Box sx={{ mt: 6}}>
                                     <FilePond
@@ -224,24 +253,32 @@ export default function Driver() {
                             <Box sx={{ margin: 5, display:'flex', flexDirection:'column'}}>
                                 <Box>
                                     <TextField
-                                        autoFocus
                                         margin="dense"
                                         id="name"
                                         label="姓名"
                                         name="productName"
                                         fullWidth
                                         variant="standard"
+                                        onChange={(event)=>{
+                                            const tmp = driver;
+                                            tmp.name = event.target.value;
+                                            setDriver(tmp);
+                                        }}
                                     />
                                 </Box>
                                 <Box>
                                     <TextField
-                                        autoFocus
                                         margin="dense"
                                         id="name"
                                         label="身份证"
                                         name="productName"
                                         fullWidth
                                         variant="standard"
+                                        onChange={(event)=>{
+                                            const tmp = driver;
+                                            tmp.cardNum = event.target.value;
+                                            setDriver(tmp);
+                                        }}
                                     />
                                 </Box>
                             </Box>
@@ -253,7 +290,7 @@ export default function Driver() {
                             setFiles([]);
                         }}>取消</Button>
                         {/* eslint-disable-next-line react/jsx-no-bind */}
-                        <Button type="submit" onClick={()=>handleSubmit()}>确认</Button>
+                        <Button type="submit" onClick={()=>insertDriver()}>确认</Button>
                     </DialogActions>
             </Dialog>
             <Container>
@@ -280,14 +317,14 @@ export default function Driver() {
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
-                                    rowCount={USERLIST.length}
+                                    rowCount={driverList.length}
                                     numSelected={selected.length}
                                     onRequestSort={handleRequestSort}
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
                                     {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, name, role, company, avatarUrl } = row;
+                                        const { id, name, cardNum, photo } = row;
                                         const isItemSelected = selected.indexOf(name) !== -1;
 
                                         return (
@@ -300,18 +337,18 @@ export default function Driver() {
                                                 aria-checked={isItemSelected}
                                             >
                                                 <TableCell padding="checkbox">
-                                                    <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
+                                                    <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
                                                 </TableCell>
                                                 <TableCell component="th" scope="row" padding="none">
                                                     <Stack direction="row" alignItems="center" spacing={2}>
-                                                        <Avatar alt={name} src={avatarUrl} />
+                                                        <Avatar alt={name} src={photo} />
                                                         <Typography variant="subtitle2" noWrap>
                                                             {name}
                                                         </Typography>
                                                     </Stack>
                                                 </TableCell>
-                                                <TableCell align="left">{company}</TableCell>
-                                                <TableCell align="left">{role}</TableCell>
+                                                <TableCell align="left">{cardNum}</TableCell>
+                                                {/* <TableCell align="left">{role}</TableCell> */}
                                                 <TableCell align="right">
                                                     <UserMoreMenu />
                                                 </TableCell>
@@ -341,7 +378,7 @@ export default function Driver() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={USERLIST.length}
+                        count={driverList.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

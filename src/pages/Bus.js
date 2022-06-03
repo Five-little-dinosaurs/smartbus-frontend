@@ -1,6 +1,6 @@
 import {filter, sample} from 'lodash';
 // import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -16,11 +16,11 @@ import {
     Container,
     Typography,
     TableContainer,
-    TablePagination, Dialog, DialogTitle, Box, DialogContent, Grid, DialogActions, TextField,
+    TablePagination, Dialog, DialogTitle, DialogContent, Grid, DialogActions, TextField,Autocomplete
 } from '@mui/material';
 // components
-import {faker} from "@faker-js/faker";
-import {Autocomplete} from "@mui/lab";
+// import {faker} from "@faker-js/faker";
+import axios from "axios";
 import Page from '../components/Page';
 import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
@@ -30,6 +30,7 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
 import BusMoreMenu from "../sections/@dashboard/bus/BusMoreMenu";
+import {Address} from "../store/Address";
 
 // ----------------------------------------------------------------------
 
@@ -42,30 +43,27 @@ const TABLE_HEAD = [
     { id: '' },
 ];
 
-const busLists = [...Array(24)].map(() => ({
-    id: faker.datatype.uuid(),
-    // avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`,
-    name: sample(['59路','38路','3路']),
-    company: sample(['鲁B88888','鲁B66666','鲁B55555']),
-    isVerified: sample([4124,12313,123]),
-    status: sample(['正常', '异常']),
-    role: sample([
-        '张三',
-        '李四',
-        '王五',
-        // 'UX Designer',
-        // 'UI/UX Designer',
-        // 'Project Manager',
-        // 'Backend Developer',
-        // 'Full Stack Designer',
-        // 'Front End Developer',
-        // 'Full Stack Developer',
-    ]),
-}));
+// const busLists = [...Array(24)].map(() => ({
+//     id: faker.datatype.uuid(),
+//     // avatarUrl: `/static/mock-images/avatars/avatar_${index + 1}.jpg`,
+//     name: sample(['59路','38路','3路']),
+//     company: sample(['鲁B88888','鲁B66666','鲁B55555']),
+//     isVerified: sample([4124,12313,123]),
+//     status: sample(['正常', '异常']),
+//     role: sample([
+//         '张三',
+//         '李四',
+//         '王五',
+//         // 'UX Designer',
+//         // 'UI/UX Designer',
+//         // 'Project Manager',
+//         // 'Backend Developer',
+//         // 'Full Stack Designer',
+//         // 'Front End Developer',
+//         // 'Full Stack Developer',
+//     ]),
+// }));
 // ----------------------------------------------------------------------
-const driver = [
-    { id: '123', name: '张三'}
-]
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -109,6 +107,14 @@ export default function Bus() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [busInfoDialog, setBusInfoDialog] = useState(false);
+
+    const [driverList, setDriverList] = useState([]);
+    const [busLists, setBusLists] = useState([]);
+    const [busInfo, setBusInfo] = useState({
+        name:'',
+        number:'',
+        driverId:''
+    })
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -117,7 +123,7 @@ export default function Bus() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = USERLIST.map((n) => n.name);
+            const newSelecteds = USERLIST.map((n) => n.id);
             setSelected(newSelecteds);
             return;
         }
@@ -157,12 +163,41 @@ export default function Bus() {
     const filteredUsers = applySortFilter(busLists, getComparator(order, orderBy), filterName);
 
     const isUserNotFound = filteredUsers.length === 0;
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console,camelcase
-    };
 
+    function insertBus(){
+        console.log(busInfo);
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < driverList.length; i++) {
+            if(driverList[i].name === busInfo.driverId){
+                busInfo.driverId=driverList[i].id;
+            }
+        }
+        axios.post(`${Address}/busroute`,busInfo).then(()=>{
+            axios.get(`${Address}/busroute`).then((res)=>{
+                // eslint-disable-next-line no-plusplus
+                for (let i = 0; i < res.data.length; i++) {
+                    res.data[i].status = sample(['正常','异常']);
+                }
+                setBusLists(res.data);
+                setBusInfoDialog(false);
+            })
+        })
+    }
+
+    useEffect(()=>{
+        axios.get(`${Address}/driver`).then((res)=>{
+            // console.log(res.data);
+            setDriverList(res.data);
+        })
+        axios.get(`${Address}/busroute`).then((res)=>{
+            // eslint-disable-next-line no-plusplus
+            for (let i = 0; i < res.data.length; i++) {
+                res.data[i].status = sample(['正常','异常']);
+            }
+            console.log(res.data);
+            setBusLists(res.data);
+        })
+    },[]);
     return (
         <Page title="Bus">
             <Dialog open={busInfoDialog} onClose={()=>{
@@ -171,39 +206,47 @@ export default function Bus() {
                 fullWidth
             >
                 <DialogTitle>填写信息</DialogTitle>
-                {/* eslint-disable-next-line react/jsx-no-bind */}
-                <Box component="form" onSubmit={handleSubmit}>
                     <DialogContent>
                         <Grid container spacing={5} sx={{ justifyContent:'center' }}>
                             <Grid item xs={6.7}>
                                 <TextField
-                                    autoFocus
                                     margin="dense"
                                     id="name"
                                     label="公交线路"
                                     name="productName"
                                     fullWidth
                                     variant="standard"
+                                    onChange={(event)=>{
+                                        const tmp = busInfo;
+                                        tmp.name = event.target.value;
+                                        setBusInfo(tmp);
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6.7}>
                                 <TextField
-                                    autoFocus
                                     margin="dense"
                                     id="name"
                                     label="公交车车牌"
                                     name="productName"
                                     fullWidth
                                     variant="standard"
+                                    onChange={(event)=>{
+                                        const tmp = busInfo;
+                                        tmp.number = event.target.value;
+                                        setBusInfo(tmp);
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6.7} sx={{ mt: 2 }}>
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
-                                    options={driver.map((option)=> option.name)}
+                                    options={driverList.map((option)=> option.name)}
                                     onChange={(event, newValue) => {
-                                        console.log(newValue);
+                                        const tmp = busInfo;
+                                        tmp.driverId = newValue;
+                                        setBusInfo(tmp);
                                     }}
                                     sx={{ width: 300 }}
                                     renderInput={(params) => <TextField {...params} label="公交车司机" />}
@@ -216,9 +259,8 @@ export default function Bus() {
                             setBusInfoDialog(false);
                         }}>取消</Button>
                         {/* eslint-disable-next-line react/jsx-no-bind */}
-                        <Button type="submit">确认</Button>
+                        <Button type="submit" onClick={()=>insertBus()}>确认</Button>
                     </DialogActions>
-                </Box>
             </Dialog>
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -249,7 +291,7 @@ export default function Bus() {
                                 />
                                 <TableBody>
                                     {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, name, role, status, company, isVerified } = row;
+                                        const { id, name, number, status, driverName, driverId, stateList } = row;
                                         const isItemSelected = selected.indexOf(id) !== -1;
 
                                         return (
@@ -274,9 +316,9 @@ export default function Bus() {
                                                 {/*    </Stack> */}
                                                 {/* </TableCell> */}
                                                 <TableCell align="left">{name}</TableCell>
-                                                <TableCell align="left">{company}</TableCell>
-                                                <TableCell align="left">{role}</TableCell>
-                                                <TableCell align="left">{isVerified}</TableCell>
+                                                <TableCell align="left">{number}</TableCell>
+                                                <TableCell align="left">{driverName}</TableCell>
+                                                <TableCell align="left">{driverId}</TableCell>
                                                 <TableCell align="left">
                                                     <Label variant="ghost"
                                                            color={(status === '异常' && 'error') || 'success'}>
@@ -285,7 +327,7 @@ export default function Bus() {
                                                 </TableCell>
 
                                                 <TableCell align="right">
-                                                    <BusMoreMenu />
+                                                    <BusMoreMenu busId={id} stateList={stateList} setBusLists={setBusLists} busLists={busLists}/>
                                                 </TableCell>
                                             </TableRow>
                                         );

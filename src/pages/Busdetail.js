@@ -4,16 +4,19 @@ import { GaodeMap } from '@antv/l7-maps';
 import {Box, Button, Card, Stack, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import {Autocomplete} from "@mui/lab";
+import axios from "axios";
 import Page from "../components/Page";
+import {Address} from "../store/Address";
 // import Iconify from "../components/Iconify";
 
-const bus = [
-    { id: '123', name: '38', number: '鲁B88888'},
-    { id: '123', name: '59', number: '鲁B66666'}
-]
+// const bus = [
+//     { id: '123', name: '38', number: '鲁B88888'},
+//     { id: '123', name: '59', number: '鲁B66666'}
+// ]
 export default function Busdetail() {
     // const [bus, setBus] = useState(59);
     const [scene, setScene] = useState(null);
+    const [busLists, setBusLists] = useState([]);
     // const [gps, setGps] = useState({R: 120.19247000000001, Q: 35.951667});
     // eslint-disable-next-line react-hooks/exhaustive-deps
     function showBus(gps,number){
@@ -174,6 +177,9 @@ export default function Busdetail() {
         });
     }
     useEffect(()=>{
+        axios.get(`${Address}/busroute`).then((res)=>{
+            setBusLists(res.data);
+        })
         const gps = {R: 120.19247000000001, Q: 35.951667};
         const scene = new Scene({
             id: 'map',
@@ -196,14 +202,14 @@ export default function Busdetail() {
                 <Autocomplete
                     disablePortal
                     id="combo-box-demo"
-                    options={bus.map((option)=> `${option.name}:${option.number}`)}
+                    options={busLists.map((option)=> `${option.name}:${option.number}`)}
                     onChange={(event, newValue) => {
                         if (newValue==null) {
                             scene.removeAllLayer();
                             return;
                         };
                         console.log(newValue);
-                        const index = newValue.toString().indexOf(':');
+                        const index = newValue.toString().indexOf('路');
                         window.AMap.plugin([ 'AMap.ToolBar', 'AMap.LineSearch' ], () => {
                             // eslint-disable-next-line no-undef
                             scene.map.addControl(new AMap.ToolBar());

@@ -1,5 +1,6 @@
 import {useRef, useState} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import axios from "axios";
 // material
 import {
     Menu,
@@ -14,24 +15,41 @@ import {
 } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
+import {Address} from "../../../store/Address";
+
 
 // ----------------------------------------------------------------------
 
-export default function BusMoreMenu() {
+// eslint-disable-next-line react/prop-types
+export default function BusMoreMenu({busId, stateList, setBusLists, busLists}) {
     const ref = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [roadOpen, setRoadOpen] = useState(false);
-    const [road, setRoad] = useState([1]);
+    // eslint-disable-next-line react/prop-types
+    const [road, setRoad] = useState(stateList===null? [1] : stateList.split(','));
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
+        const state = [];
         // eslint-disable-next-line no-plusplus
         for(let i = 1;i<=road.length;i++){
-            console.log(data.get(i.toString()));
+            state.push(data.get(i.toString()));
         }
+        console.log(state.toString());
+        axios.put(`${Address}/busroute`,{id: busId, stateList: state.toString()}).then();
+        setRoadOpen(false);
+        // eslint-disable-next-line no-plusplus,react/prop-types
+        for (let i = 0; i < busLists.length; i++) {
+            // eslint-disable-next-line react/prop-types
+            if (busLists[i].id===busId) {
+                // eslint-disable-next-line react/prop-types
+                busLists[i].stateList=state.toString();
+                setBusLists(busLists);
+                break;
+            }
+        }
+        // setRoad([1]);
 
-        console.log(road);
-        setRoad([1]);
     };
     // useEffect(() => {
     //
@@ -68,12 +86,12 @@ export default function BusMoreMenu() {
                     <ListItemIcon>
                         <Iconify icon="eva:edit-fill" width={24} height={24} />
                     </ListItemIcon>
-                    <ListItemText primary="添加" primaryTypographyProps={{ variant: 'body2' }} />
+                    <ListItemText primary="添加站点" primaryTypographyProps={{ variant: 'body2' }} />
                 </MenuItem>
             </Menu>
             <Dialog open={roadOpen} onClose={()=>{
                 setRoadOpen(false);
-                setRoad([1]);
+                // setRoad([1]);
             }}
                     fullWidth
                     scroll='paper'
@@ -97,9 +115,11 @@ export default function BusMoreMenu() {
                             {road.map((index)=>(
                                     <Grid item xs={12} key={index}>
                                         <TextField
-                                            autoFocus
+                                            // autoFocus
+                                            // eslint-disable-next-line no-nested-ternary,react/prop-types
+                                            defaultValue={stateList===null? '' : (stateList.split(',').length>=index ? stateList.split(',')[index-1] : '')}
                                             margin="dense"
-                                            id={index.toString()}
+                                            // id={index.toString()}
                                             label="站点名"
                                             name={index.toString()}
                                             fullWidth
@@ -113,7 +133,7 @@ export default function BusMoreMenu() {
                     <DialogActions>
                         <Button onClick={()=>{
                             setRoadOpen(false);
-                            setRoad([1]);
+                            // setRoad([1]);
                         }}>取消</Button>
                         {/* eslint-disable-next-line react/jsx-no-bind */}
                         <Button type="submit">确认</Button>
