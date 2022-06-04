@@ -23,8 +23,9 @@ import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import {Address} from "../store/Address";
+import UserMoreAction from "../sections/@dashboard/user/UserMoreAction";
 
 // ----------------------------------------------------------------------
 
@@ -187,7 +188,6 @@ export default function User() {
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, name, thing, status, region, punishment } = row;
                     const isItemSelected = selected.indexOf(id) !== -1;
-
                     return (
                       <TableRow
                         hover
@@ -200,16 +200,17 @@ export default function User() {
                         <TableCell padding="checkbox">
                           <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
                         </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            {/* <Avatar alt={name} src={photo} /> */}
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
+                        {/* <TableCell component="th" scope="row" padding="none"> */}
+                        {/*  <Stack direction="row" alignItems="center" spacing={2}> */}
+                        {/*    /!* <Avatar alt={name} src={photo} /> *!/ */}
+                        {/*    <Typography variant="subtitle2" noWrap> */}
+                        {/*      {name} */}
+                        {/*    </Typography> */}
+                        {/*  </Stack> */}
+                        {/* </TableCell> */}
+                        <TableCell align="left">{name}</TableCell>
                         <TableCell align="left">{region}</TableCell>
-                        <TableCell align="left">{thing !== null ? (thing): '暂无'}</TableCell>
+                        <TableCell align="left">{thing !== null ? thing : '暂无'}</TableCell>
                         <TableCell align="left">{punishment !== null ? '是' : '否'}</TableCell>
                         <TableCell align="left">
                           <Label variant="ghost" color={(status === 0 && 'error') || 'success'}>
@@ -218,7 +219,7 @@ export default function User() {
                         </TableCell>
 
                         <TableCell align="right">
-                          <UserMoreMenu />
+                          <UserMoreAction id={id} />
                         </TableCell>
                       </TableRow>
                     );

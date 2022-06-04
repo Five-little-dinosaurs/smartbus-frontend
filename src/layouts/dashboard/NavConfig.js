@@ -27,7 +27,7 @@ const navConfig = [
     icon: getIcon('eva:people-fill'),
   },
   {
-    title: 'user',
+    title: '乘客',
     path: '/manage/user',
     icon: getIcon('eva:people-fill'),
   },
