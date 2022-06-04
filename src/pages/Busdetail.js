@@ -1,9 +1,8 @@
 import { Scene, PointLayer, LineLayer } from '@antv/l7';
 import { GaodeMap } from '@antv/l7-maps';
 // import AMapLoader from '@amap/amap-jsapi-loader';
-import {Box, Button, Card, Container, Stack, TextField, Typography} from "@mui/material";
+import {Box, Button, Card, Container, Stack, TextField, Typography, Autocomplete } from "@mui/material";
 import {useEffect, useState} from "react";
-import {Autocomplete} from "@mui/lab";
 import axios from "axios";
 import Page from "../components/Page";
 import {Address} from "../store/Address";
@@ -178,7 +177,10 @@ export default function Busdetail() {
     }
     useEffect(()=>{
         axios.get(`${Address}/busroute`).then((res)=>{
+            // console.log(res);
             setBusLists(res.data);
+        }).catch((res)=>{
+            console.log(res);
         })
         const gps = {R: 120.19247000000001, Q: 35.951667};
         const scene = new Scene({
