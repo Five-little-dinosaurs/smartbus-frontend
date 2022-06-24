@@ -1,7 +1,5 @@
 import { Scene, PointLayer, LineLayer } from '@antv/l7';
 import { GaodeMap } from '@antv/l7-maps';
-import DeviceThermostatIcon from '@mui/icons-material/DeviceThermostat';
-import OpacityIcon from '@mui/icons-material/Opacity';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import MonochromePhotosIcon from '@mui/icons-material/MonochromePhotos';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
