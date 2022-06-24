@@ -66,5 +66,5 @@ export default function Logo({ disabledLink = false }) {
     return <>{logo}</>;
   }
 
-  return <RouterLink to="/">{logo}</RouterLink>;
+  return <RouterLink to="/manage/app">{logo}</RouterLink>;
 }
