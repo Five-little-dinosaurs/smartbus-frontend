@@ -219,7 +219,7 @@ export default function Driver() {
         })
     },[]);
     return (
-        <Page title="User">
+        <Page title="Driver">
             <Dialog open={driverInfoDialog} onClose={()=>{
                 setDriverInfoDialog(false);
                 setFiles([]);
