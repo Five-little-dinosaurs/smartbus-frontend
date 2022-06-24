@@ -13,6 +13,7 @@ import Register from './pages/Register';
 import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Busdetail from './pages/Busdetail';
+import Busroute from "./pages/Busroute";
 // -----------------------------------------------------------------------
 
 export default function Router() {
@@ -26,6 +27,7 @@ export default function Router() {
         { path: 'user', element: <User /> },
         { path: 'bus', element: <Bus /> },
         { path: 'driver', element: <Driver /> },
+        { path: 'busroute', element: <Busroute /> },
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> },
       ],

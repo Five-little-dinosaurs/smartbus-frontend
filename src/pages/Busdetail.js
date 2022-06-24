@@ -16,6 +16,7 @@ export default function Busdetail() {
     // const [bus, setBus] = useState(59);
     const [scene, setScene] = useState(null);
     const [busLists, setBusLists] = useState([]);
+    // const [busInfoDialog, setBusInfoDialog] = useState(false);
     // const [gps, setGps] = useState({R: 120.19247000000001, Q: 35.951667});
     // eslint-disable-next-line react-hooks/exhaustive-deps
     function showBus(gps,number){
@@ -210,7 +211,7 @@ export default function Busdetail() {
                         if (newValue==null) {
                             scene.removeAllLayer();
                             return;
-                        };
+                        }
                         console.log(newValue);
                         const index = newValue.toString().indexOf('路');
                         window.AMap.plugin([ 'AMap.ToolBar', 'AMap.LineSearch' ], () => {
