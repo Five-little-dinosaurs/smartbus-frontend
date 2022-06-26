@@ -252,23 +252,23 @@ export default function Busroute() {
         {
             id: 1,
             name: 'K83路和K33路',
-            description: 'xxx'
+            description: 'K83与K33线路重合度较高，客流量较少。'
         },
         {
             id: 2,
             name: '38路和59路',
-            description: 'xxx'
-        },
-        {
-            id: 3,
-            name: '38路和59路',
-            description: 'xxx'
-        },
-        {
-            id: 4,
-            name: '38路和59路',
-            description: 'xxx'
+            description: '将38路公交的起点和59路公交的终点改为第二人民医院站。'
         }
+        // {
+        //     id: 3,
+        //     name: '38路和59路',
+        //     description: 'xxx'
+        // },
+        // {
+        //     id: 4,
+        //     name: '38路和59路',
+        //     description: 'xxx'
+        // }
     ]
 
     useEffect(()=>{
@@ -287,8 +287,10 @@ export default function Busroute() {
                         <Box sx={{display:'flex',flexDirection: 'row', height:'100%',width:'100%',position:'relative'}}>
                             <Box sx={{ display:'flex', flexDirection:'column', margin: 2, width:'15%'}}>
                                 <Typography variant='h6'>
-                                    原因：xxx
-                                    xxxxxxx
+                                    原因：K83与K33线路重合度较高，客流量较少。
+                                </Typography>
+                                <Typography variant='h6'>
+                                    建议将K83的终点从北圆站的改为茂新街站，或将K33的终点站从解放桥站改为茂新界街站。
                                 </Typography>
                             </Box>
                             <Card sx={{height: '93%', width:'85%', margin: 2}} id="map"/>
