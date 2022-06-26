@@ -9,7 +9,6 @@ import {
     ListItemIcon,
     ListItemText,
     DialogTitle,
-    Box,
     DialogContent,
     Button, Grid, TextField, DialogActions, Dialog
 } from '@mui/material';
@@ -24,7 +23,7 @@ export default function UserMoreAction({id}) {
     const ref = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [accept, setAccept] = useState(false);
-    const handleSubmit = () => {
+    const updateFeedback = () => {
         console.log(id);
         axios.put(`${Address}/feedback`,{userId: id, status: 1}).then();
         setAccept(false);
@@ -50,7 +49,7 @@ export default function UserMoreAction({id}) {
                     <ListItemIcon>
                         <Iconify icon="eva:trash-2-outline" width={24} height={24} />
                     </ListItemIcon>
-                    <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
+                    <ListItemText primary="删除" primaryTypographyProps={{ variant: 'body2' }} />
                 </MenuItem>
 
                 <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }} onClick={()=> setAccept(true)}>
@@ -70,7 +69,6 @@ export default function UserMoreAction({id}) {
             >
                 <DialogTitle>填写信息</DialogTitle>
                 {/* eslint-disable-next-line react/jsx-no-bind */}
-                <Box component="form" onSubmit={handleSubmit}>
                     <DialogContent>
                         <Grid container spacing={2} sx={{ mt: 2 }}>
                             {/* <DataGrid checkboxSelection hideFooter rows={rows} columns={columns} /> */}
@@ -94,9 +92,10 @@ export default function UserMoreAction({id}) {
                             // setRoad([1]);
                         }}>取消</Button>
                         {/* eslint-disable-next-line react/jsx-no-bind */}
-                        <Button type="submit">确认</Button>
+                        <Button onClick={()=>{
+                            updateFeedback();
+                        }}>确认</Button>
                     </DialogActions>
-                </Box>
             </Dialog>
         </>
     );
