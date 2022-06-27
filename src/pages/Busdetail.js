@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {Devices} from "@mui/icons-material";
 import Page from "../components/Page";
 import {Address} from "../store/Address";
 // import Iconify from "../components/Iconify";
@@ -36,7 +37,7 @@ export default function Busdetail() {
     const [photoDialog, setPhotoDialog] = useState(false);
     const [statusDialog, setStatusDialog] = useState(false);
     const [detail, setDetail]=useState({});
-
+    const [deviceStatus, setDeviceStatus] = useState(false);
     // const [gps, setGps] = useState({R: 120.19247000000001, Q: 35.951667});
     // eslint-disable-next-line react-hooks/exhaustive-deps
     function showBus(gps,number){
@@ -291,6 +292,24 @@ export default function Busdetail() {
                         </DialogContentText>
                 </DialogContent>
             </Dialog>
+            <Dialog open={deviceStatus} onClose={()=>{
+                setDeviceStatus(false);
+            }}
+                    fullWidth
+            >
+                <DialogTitle>设备状态</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        openmv:正常运行
+                    </DialogContentText>
+                    <DialogContentText id="alert-dialog-description">
+                        树莓派:正常运行
+                    </DialogContentText>
+                    <DialogContentText id="alert-dialog-description">
+                        小熊派:正常运行
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
             <Container>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                 <Typography variant="h4" gutterBottom>
@@ -388,6 +407,9 @@ export default function Busdetail() {
                             <Button startIcon={<AssignmentIndIcon />} sx={{ display:'flex', margin: 2}} variant="contained" onClick={()=>{
                                 setStatusDialog(true);
                             }}>司机状态</Button>
+                            <Button startIcon={<Devices />} sx={{ display:'flex', margin: 2}} variant="contained" onClick={()=>{
+                                setDeviceStatus(true);
+                            }}>设备状态</Button>
                         </Box>
                     </Box>
                 </Card>
