@@ -15,7 +15,6 @@ import {
 } from '../sections/@dashboard/app';
 
 // ----------------------------------------------------------------------
-
 export default function DashboardApp() {
   const theme = useTheme();
 
@@ -132,7 +131,6 @@ export default function DashboardApp() {
               chartColors={[...Array(4)].map(() => theme.palette.text.secondary)}
             />
           </Grid>
-
           {/* <Grid item xs={12} md={6} lg={8}> */}
           {/*  <AppNewsUpdate */}
           {/*    title="News Update" */}

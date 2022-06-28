@@ -36,6 +36,16 @@ const navConfig = [
     path: '/manage/busroute',
     icon: getIcon('eos-icons:route'),
   },
+  {
+    title: '用户日志管理',
+    path: '/manage/userLogInfo',
+    icon: getIcon('bi:clipboard2-data'),
+  },
+  {
+    title: '设备日志管理',
+    path: '/manage/deviceLogInfo',
+    icon: getIcon('bi:clipboard2-data'),
+  },
   // {
   //   title: 'product',
   //   path: '/manage/products',

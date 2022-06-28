@@ -14,6 +14,8 @@ import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Busdetail from './pages/Busdetail';
 import Busroute from "./pages/Busroute";
+import UserLogInfo from "./pages/UserLogInfo";
+import DeviceLogInfo from "./pages/DeviceLogInfo";
 // -----------------------------------------------------------------------
 
 export default function Router() {
@@ -30,6 +32,8 @@ export default function Router() {
         { path: 'busroute', element: <Busroute /> },
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> },
+        { path: 'userLogInfo', element: <UserLogInfo /> },
+        { path: 'deviceLogInfo', element: <DeviceLogInfo /> },
       ],
     },
     {
