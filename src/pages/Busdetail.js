@@ -217,10 +217,6 @@ export default function Busdetail() {
             logoVisible: false
         });
         setScene(scene);
-        axios.get(`${Address}/totaldetail`).then((res)=>{
-            setDetail(res.data);
-            console.log(res.data);
-        })
     },[]);
     return (
         <Page title="BusDetail">
@@ -289,7 +285,7 @@ export default function Busdetail() {
                 <DialogTitle>司机状态</DialogTitle>
                 <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            驾驶状态:{detail.status === 0 ? '疲惫' : '正常' }
+                            驾驶状态:{detail.dstatus === 0 ? '疲惫' : '正常' }
                         </DialogContentText>
                 </DialogContent>
             </Dialog>
@@ -393,6 +389,10 @@ export default function Busdetail() {
                         <Card sx={{height: '93%', width:'80%', margin: 2}} id="map"/>
                         <Box sx={{ display:'flex', flexDirection:'column', margin: 2}}>
                             <Button startIcon={<DirectionsBusIcon />} sx={{ display:'flex', margin: 2}} variant="contained" onClick={()=>{
+                                axios.get(`${Address}/totaldetail`).then((res)=>{
+                                    setDetail(res.data);
+                                    console.log(res.data);
+                                })
                                 setDetailDialog(true);
                             }}>
                                 车辆情况
@@ -400,15 +400,31 @@ export default function Busdetail() {
                             {/* <Button startIcon={<DeviceThermostatIcon />} sx={{ display:'flex', margin: 2}} variant="contained">温度</Button> */}
                             {/* <Button startIcon={<OpacityIcon />} sx={{ display:'flex', margin: 2}} variant="contained">湿度</Button> */}
                             <Button startIcon={<EmojiPeopleIcon />} sx={{ display:'flex', margin: 2}} variant="contained" onClick={()=>{
+                                axios.get(`${Address}/totaldetail`).then((res)=>{
+                                    setDetail(res.data);
+                                    console.log(res.data);
+                                })
                                 setPeopleDialog(true);
                             }}>刷卡人数</Button>
                             <Button startIcon={<MonochromePhotosIcon />} sx={{ display:'flex', margin: 2}} variant="contained" onClick={()=>{
+                                axios.get(`${Address}/totaldetail`).then((res)=>{
+                                    setDetail(res.data);
+                                    console.log(res.data);
+                                })
                                 setPhotoDialog(true);
                             }}>车况图片</Button>
                             <Button startIcon={<AssignmentIndIcon />} sx={{ display:'flex', margin: 2}} variant="contained" onClick={()=>{
+                                axios.get(`${Address}/totaldetail`).then((res)=>{
+                                    setDetail(res.data);
+                                    console.log(res.data);
+                                })
                                 setStatusDialog(true);
                             }}>司机状态</Button>
                             <Button startIcon={<Devices />} sx={{ display:'flex', margin: 2}} variant="contained" onClick={()=>{
+                                axios.get(`${Address}/totaldetail`).then((res)=>{
+                                    setDetail(res.data);
+                                    console.log(res.data);
+                                })
                                 setDeviceStatus(true);
                             }}>设备状态</Button>
                         </Box>
