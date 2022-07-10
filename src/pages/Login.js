@@ -1,7 +1,7 @@
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Card, Link, Container, Typography } from '@mui/material';
+import { Card, Container, Typography } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -57,7 +57,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  const smUp = useResponsive('up', 'sm');
+  // const smUp = useResponsive('up', 'sm');
 
   const mdUp = useResponsive('up', 'md');
 
@@ -67,14 +67,14 @@ export default function Login() {
         <HeaderStyle>
           <Logo />
 
-          {smUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              还没注册? {''}
-              <Link variant="subtitle2" component={RouterLink} to="/register">
-                注册
-              </Link>
-            </Typography>
-          )}
+          {/* {smUp && ( */}
+          {/*  <Typography variant="body2" sx={{ mt: { md: -2 } }}> */}
+          {/*    还没注册? {''} */}
+          {/*    <Link variant="subtitle2" component={RouterLink} to="/register"> */}
+          {/*      注册 */}
+          {/*    </Link> */}
+          {/*  </Typography> */}
+          {/* )} */}
         </HeaderStyle>
 
         {mdUp && (
@@ -98,14 +98,14 @@ export default function Login() {
 
             <LoginForm />
 
-            {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                还没注册?{' '}
-                <Link variant="subtitle2" component={RouterLink} to="/register">
-                  注册
-                </Link>
-              </Typography>
-            )}
+            {/* {!smUp && ( */}
+            {/*  <Typography variant="body2" align="center" sx={{ mt: 3 }}> */}
+            {/*    还没注册?{' '} */}
+            {/*    <Link variant="subtitle2" component={RouterLink} to="/register"> */}
+            {/*      注册 */}
+            {/*    </Link> */}
+            {/*  </Typography> */}
+            {/* )} */}
           </ContentStyle>
         </Container>
       </RootStyle>
