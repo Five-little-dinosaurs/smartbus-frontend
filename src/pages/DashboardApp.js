@@ -1,8 +1,9 @@
 // import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Grid, Container, Typography } from '@mui/material';
+import {Grid, Container, Typography, Card} from '@mui/material';
 // components
+import 'echarts/extension/bmap/bmap';
 import Page from '../components/Page';
 // import Iconify from '../components/Iconify';
 // sections
@@ -13,6 +14,7 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../sections/@dashboard/app';
+import Echarts from "./Echarts";
 
 // ----------------------------------------------------------------------
 export default function DashboardApp() {
@@ -24,7 +26,6 @@ export default function DashboardApp() {
         <Typography variant="h4" sx={{ mb: 5 }}>
           数据分析
         </Typography>
-
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary title="AP设备总数" total={384} icon={'akar-icons:watch-device'} />
@@ -37,12 +38,45 @@ export default function DashboardApp() {
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary title="物联设备在线数" total={582} color="success" icon={'ic:baseline-device-hub'} />
           </Grid>
-
+            <Grid item xs={12} md={6} lg={3}>
+                <AppCurrentVisits
+                    title="AP设备情况"
+                    chartData={[
+                        { label: '在线', value: 380 },
+                        { label: '离线', value: 50 },
+                        { label: '损坏', value: 35 },
+                        // { label: 'Africa', value: 4443 },
+                    ]}
+                    chartColors={[
+                        theme.palette.chart.green[1],
+                        theme.palette.chart.blue[0],
+                        theme.palette.chart.yellow[0],
+                        // theme.palette.chart.yellow[0],
+                    ]}
+                />
+            </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+                <Card>
+                    <Echarts />
+                </Card>
+            </Grid>
+            <Grid item xs={12} md={6} lg={3}>
+                <AppCurrentSubject
+                    title="客流分析"
+                    chartLabels={['换乘倾向', '满意度', '舒适度', '大龄用户']}
+                    chartData={[
+                        { name: '第一季度', data: [80, 50, 30, 40] },
+                        { name: '第二季度', data: [20, 30, 40, 80] },
+                        { name: '第三季度', data: [44, 76, 78, 13] },
+                    ]}
+                    chartColors={[...Array(4)].map(() => theme.palette.text.secondary)}
+                />
+            </Grid>
           {/* <Grid item xs={12} sm={6} md={3}> */}
           {/*  <AppWidgetSummary title="AP设备" total={234} color="error" icon={'akar-icons:watch-device'} /> */}
           {/* </Grid> */}
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={6}>
             <AppWebsiteVisits
               title="公交车人流量"
               subheader="(+43%) 高于过去一年"
@@ -82,25 +116,8 @@ export default function DashboardApp() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentVisits
-              title="AP设备情况"
-              chartData={[
-                { label: '在线', value: 380 },
-                { label: '离线', value: 50 },
-                { label: '损坏', value: 35 },
-                // { label: 'Africa', value: 4443 },
-              ]}
-              chartColors={[
-                theme.palette.chart.green[1],
-                theme.palette.chart.blue[0],
-                theme.palette.chart.yellow[0],
-                // theme.palette.chart.yellow[0],
-              ]}
-            />
-          </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={6}>
             <AppConversionRates
               title="客流最大的十辆车"
               // subheader="(+43%) than last year"
@@ -119,18 +136,6 @@ export default function DashboardApp() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
-            <AppCurrentSubject
-              title="客流分析"
-              chartLabels={['换乘倾向', '满意度', '舒适度', '大龄用户']}
-              chartData={[
-                { name: '第一季度', data: [80, 50, 30, 40] },
-                { name: '第二季度', data: [20, 30, 40, 80] },
-                { name: '第三季度', data: [44, 76, 78, 13] },
-              ]}
-              chartColors={[...Array(4)].map(() => theme.palette.text.secondary)}
-            />
-          </Grid>
           {/* <Grid item xs={12} md={6} lg={8}> */}
           {/*  <AppNewsUpdate */}
           {/*    title="News Update" */}
