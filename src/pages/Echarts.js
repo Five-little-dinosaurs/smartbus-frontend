@@ -205,7 +205,7 @@ class Echarts extends Component {
     }
 
     render() {
-        return <div id="main" style={{ position: 'relative', width: 720, height: 500 }} />;
+        return <div id="main" style={{ position: 'relative', width: 720, height: 480 }} />;
     }
 }
 
