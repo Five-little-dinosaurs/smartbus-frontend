@@ -15,7 +15,7 @@ import {
     Slide,
     TableContainer,
     Table,
-    TableBody, TableRow, TableCell, Checkbox, TablePagination, Grid, TextField
+    TableBody, TableRow, TableCell, TablePagination, Grid, TextField
 } from '@mui/material';
 // components
 // import axios from "axios";
@@ -34,7 +34,7 @@ import {forwardRef, useEffect, useState} from "react";
 import {LineLayer, PointLayer, Scene} from "@antv/l7";
 import {GaodeMap} from "@antv/l7-maps";
 import Page from '../components/Page';
-import {UserListHead} from "../sections/@dashboard/user";
+import {TmpListHead} from "../sections/@dashboard/user";
 import Scrollbar from "../components/Scrollbar";
 
 // ----------------------------------------------------------------------
@@ -483,7 +483,7 @@ export default function Busroute() {
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 800}}>
                             <Table>
-                                <UserListHead
+                                <TmpListHead
                                     order={order}
                                     orderBy={orderBy}
                                     headLabel={TABLE_HEAD}
@@ -496,9 +496,9 @@ export default function Busroute() {
                                     <TableRow
                                         hover
                                     >
-                                        <TableCell padding="checkbox">
-                                            <Checkbox />
-                                        </TableCell>
+                                        {/* <TableCell padding="checkbox"> */}
+                                        {/*    <Checkbox /> */}
+                                        {/* </TableCell> */}
                                         <TableCell align="left">川A13345</TableCell>
                                         <TableCell align="left">28</TableCell>
                                         <TableCell align="left">16</TableCell>
@@ -526,9 +526,9 @@ export default function Busroute() {
                                     <TableRow
                                         hover
                                     >
-                                        <TableCell padding="checkbox">
-                                            <Checkbox />
-                                        </TableCell>
+                                        {/* <TableCell padding="checkbox"> */}
+                                        {/*    <Checkbox /> */}
+                                        {/* </TableCell> */}
                                         <TableCell align="left">川B13456</TableCell>
                                         <TableCell align="left">12</TableCell>
                                         <TableCell align="left">8</TableCell>
@@ -556,9 +556,9 @@ export default function Busroute() {
                                     <TableRow
                                         hover
                                     >
-                                        <TableCell padding="checkbox">
-                                            <Checkbox />
-                                        </TableCell>
+                                        {/* <TableCell padding="checkbox"> */}
+                                        {/*    <Checkbox /> */}
+                                        {/* </TableCell> */}
                                         <TableCell align="left">川C8659K</TableCell>
                                         <TableCell align="left">30</TableCell>
                                         <TableCell align="left">25</TableCell>

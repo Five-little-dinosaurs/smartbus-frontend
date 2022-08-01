@@ -4,6 +4,9 @@ import { useTheme } from '@mui/material/styles';
 import {Grid, Container, Typography, Card} from '@mui/material';
 // components
 import 'echarts/extension/bmap/bmap';
+import {faker} from "@faker-js/faker";
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 import Page from '../components/Page';
 // import Iconify from '../components/Iconify';
 // sections
@@ -19,7 +22,13 @@ import Echarts from "./Echarts";
 // ----------------------------------------------------------------------
 export default function DashboardApp() {
   const theme = useTheme();
+  const navigate = useNavigate();
 
+  useEffect(()=>{
+          setTimeout(()=>{
+              navigate('/manage/app');
+          },2000)
+  });
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
@@ -28,23 +37,23 @@ export default function DashboardApp() {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="AP设备总数" total={384} icon={'akar-icons:watch-device'} />
+            <AppWidgetSummary title="AP设备总数" total={Number(faker.commerce.price(300, 400))} icon={'akar-icons:watch-device'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="在线总人数" total={2102} color="info" icon={'fluent:people-20-filled'} />
+            <AppWidgetSummary title="在线总人数" total={Number(faker.commerce.price(2000, 3000))} color="info" icon={'fluent:people-20-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={4}>
-            <AppWidgetSummary title="物联设备在线数" total={582} color="success" icon={'ic:baseline-device-hub'} />
+            <AppWidgetSummary title="物联设备在线数" total={Number(faker.commerce.price(500, 700))} color="success" icon={'ic:baseline-device-hub'} />
           </Grid>
             <Grid item xs={12} md={6} lg={3}>
                 <AppCurrentVisits
                     title="AP设备情况"
                     chartData={[
-                        { label: '在线', value: 380 },
-                        { label: '离线', value: 50 },
-                        { label: '损坏', value: 35 },
+                        { label: '在线', value: Number(faker.commerce.price(200, 400))},
+                        { label: '离线', value: Number(faker.commerce.price(20, 50)) },
+                        { label: '损坏', value: Number(faker.commerce.price(5, 10)) },
                         // { label: 'Africa', value: 4443 },
                     ]}
                     chartColors={[
