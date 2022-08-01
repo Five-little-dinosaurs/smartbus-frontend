@@ -33,7 +33,7 @@ class Echarts extends Component {
                     };
                 })
             );
-        const color = '#F0FFFF';
+        const color = '#e3f2fd';
         myChart.setOption(
             (option = {
                 bmap: {
@@ -205,7 +205,7 @@ class Echarts extends Component {
     }
 
     render() {
-        return <div id="main" style={{ position: 'relative', width: 800, height: 500 }} />;
+        return <div id="main" style={{ position: 'relative', width: 720, height: 500 }} />;
     }
 }
 

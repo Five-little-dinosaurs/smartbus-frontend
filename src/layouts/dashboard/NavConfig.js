@@ -17,17 +17,17 @@ const navConfig = [
     icon: getIcon('majesticons:checkbox-list-detail'),
   },
   {
-    title: '公交',
+    title: '公交信息',
     path: '/manage/bus',
     icon: getIcon('ic:round-directions-bus'),
   },
   {
-    title: '司机',
+    title: '司机信息',
     path: '/manage/driver',
     icon: getIcon('healthicons:truck-driver'),
   },
   {
-    title: '乘客',
+    title: '反馈处理',
     path: '/manage/user',
     icon: getIcon('eva:people-fill'),
   },

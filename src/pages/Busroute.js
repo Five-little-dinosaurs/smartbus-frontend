@@ -95,6 +95,7 @@ export default function Busroute() {
 
     const [current, setCurrent]=useState(0);
 
+    const [tmpValue, setTmpValue] = useState(0);
     const TABLE_HEAD = [
         { id: 'busNo', label: '公交车牌号', alignRight: false },
         { id: 'cardCount', label: '刷卡人数', alignRight: false },
@@ -379,12 +380,7 @@ export default function Busroute() {
                                 fullWidth
                                 variant="standard"
                                 onChange={(event)=>{
-                                    if(current === 0)
-                                        setGap(event.target.value);
-                                    else if(current === 1)
-                                        setGap1(event.target.value);
-                                    else
-                                        setGap2(event.target.value);
+                                    setTmpValue(event.target.value);
                                 }}
                             />
                         </Grid>
@@ -400,6 +396,12 @@ export default function Busroute() {
                     {/* eslint-disable-next-line react/jsx-no-bind */}
                     <Button onClick={()=>{
                         setGapDialog(false);
+                        if(current === 0)
+                            setGap(tmpValue);
+                        else if(current === 1)
+                            setGap1(tmpValue);
+                        else
+                            setGap2(tmpValue);
                     }}>确认</Button>
                 </DialogActions>
             </Dialog>
@@ -418,6 +420,7 @@ export default function Busroute() {
                         {<Grid item xs={12}>
                             <Stack direction="row" spacing={2}>
                             <Button sx={{ display:'flex', color:'blue'}} variant="outlined" onClick={()=>{
+                                setModeDialog(false);
                                 if(current === 0)
                                     setMode(0);
                                 else if(current === 1)
@@ -428,6 +431,7 @@ export default function Busroute() {
                                 正常
                             </Button>
                             <Button sx={{ display:'flex', color:'green'}} variant="outlined" onClick={()=>{
+                                setModeDialog(false);
                                 if(current === 0)
                                     setMode(1);
                                 else if(current === 1)
@@ -438,6 +442,7 @@ export default function Busroute() {
                                 节能模式
                             </Button>
                             <Button sx={{ display:'flex', color:'orange'}} variant="outlined" onClick={()=>{
+                                setModeDialog(false);
                                 if(current === 0)
                                     setMode(2);
                                 else if(current === 1)
@@ -453,43 +458,27 @@ export default function Busroute() {
                         }
                     </Grid>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={()=>{
-                        setModeDialog(false);
-                        // setRoad([1]);
-                    }}>取消</Button>
-                    {/* eslint-disable-next-line react/jsx-no-bind */}
-                    <Button onClick={()=>{
-                        setModeDialog(false);
-                    }}>确认</Button>
-                </DialogActions>
+                {/* <DialogActions> */}
+                {/*    <Button onClick={()=>{ */}
+                {/*        setModeDialog(false); */}
+                {/*        // setRoad([1]); */}
+                {/*    }}>取消</Button> */}
+                {/*    /!* eslint-disable-next-line react/jsx-no-bind *!/ */}
+                {/*    <Button onClick={()=>{ */}
+                {/*        setModeDialog(false); */}
+                {/*    }}>确认</Button> */}
+                {/* </DialogActions> */}
             </Dialog>
 
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        路线优化推荐信息
+                        排班优化推荐信息
                     </Typography>
                     {/* <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}> */}
                     {/*    添加乘客 */}
                     {/* </Button> */}
                 </Stack>
-
-                <Card sx={{height: `calc(100vh - 400px)`, width: '100%', marginBottom: 2}}>
-                    <Box sx={{ margin: 2, height: '90%'}}>
-                        <DataGrid
-                            // autoHeight
-                            autoPageSize
-                            rows={busRouteInfo}
-                            columns={columns}
-                            // pageSize={5}
-                            components={{
-                                Pagination: CustomPagination,
-                                Toolbar: GridToolbar
-                            }}
-                        />
-                    </Box>
-                </Card>
                 <Card>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 800}}>
@@ -588,13 +577,13 @@ export default function Busroute() {
                                                 </Button>
                                             )}
                                             {mode2 === 2 && (<Button sx={{ display:'flex', color:'orange'}} variant="outlined" onClick={()=>{setModeDialog(true);setCurrent(2);
-                                            }}>
-                                                高效能模式
-                                            </Button>
+                                                }}>
+                                                    高效能模式
+                                                </Button>
                                             )}
                                         </TableCell>
                                     </TableRow>
-                            </TableBody>
+                                </TableBody>
                             </Table>
                         </TableContainer>
                     </Scrollbar>
@@ -608,6 +597,29 @@ export default function Busroute() {
                         onPageChange={1}
                         onRowsPerPageChange={5}
                     />
+                </Card>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} mt={2}>
+                    <Typography variant="h4" gutterBottom>
+                        路线优化推荐信息
+                    </Typography>
+                    {/* <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}> */}
+                    {/*    添加乘客 */}
+                    {/* </Button> */}
+                </Stack>
+                <Card sx={{height: `calc(100vh - 400px)`, width: '100%', marginBottom: 2}}>
+                    <Box sx={{ margin: 2, height: '90%'}}>
+                        <DataGrid
+                            // autoHeight
+                            autoPageSize
+                            rows={busRouteInfo}
+                            columns={columns}
+                            // pageSize={5}
+                            components={{
+                                Pagination: CustomPagination,
+                                Toolbar: GridToolbar
+                            }}
+                        />
+                    </Box>
                 </Card>
             </Container>
         </Page>
