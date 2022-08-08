@@ -1,12 +1,13 @@
 // import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import {Grid, Container, Typography, Card} from '@mui/material';
+import {Grid, Container, Typography, Card, IconButton} from '@mui/material';
 // components
 import 'echarts/extension/bmap/bmap';
 import {faker} from "@faker-js/faker";
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+// import {useEffect} from "react";
+import {Refresh} from "@mui/icons-material";
 import Page from '../components/Page';
 // import Iconify from '../components/Iconify';
 // sections
@@ -24,17 +25,26 @@ export default function DashboardApp() {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  useEffect(()=>{
-          setTimeout(()=>{
-              navigate('/manage/app');
-          },2000)
-  });
+  // useEffect(()=>{
+  //         setTimeout(()=>{
+  //             navigate('/manage/app');
+  //         },2000)
+  //
+  //     return(()=>{
+  //
+  //     });
+  // },[]);
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ mb: 5 }}>
+        <Typography variant="h4" sx={{ mb: 2 }}>
           数据分析
         </Typography>
+          <IconButton onClick={()=>{
+              navigate('/manage/app');
+          }}>
+              <Refresh color="secondary"/>
+          </IconButton>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={4}>
             <AppWidgetSummary title="AP设备总数" total={Number(faker.commerce.price(300, 400))} icon={'akar-icons:watch-device'} />
