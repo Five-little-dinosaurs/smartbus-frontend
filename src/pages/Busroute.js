@@ -15,7 +15,7 @@ import {
     Slide,
     TableContainer,
     Table,
-    TableBody, TableRow, TableCell, TablePagination, Grid, TextField
+    TableBody, TableRow, TableCell, TablePagination, Grid, TextField, IconButton
 } from '@mui/material';
 // components
 // import axios from "axios";
@@ -81,11 +81,11 @@ export default function Busroute() {
 
     const [orderBy, setOrderBy] = useState('name');
 
-    const [gap, setGap] = useState(10);
+    const [gap, setGap] = useState(15);
 
     const [gap1, setGap1] = useState(20);
 
-    const [gap2, setGap2] = useState(15);
+    const [gap2, setGap2] = useState(5);
 
     const [mode, setMode] = useState(0);
 
@@ -504,7 +504,9 @@ export default function Busroute() {
                                         <TableCell align="left">16</TableCell>
                                         <TableCell align="left">3</TableCell>
                                         <TableCell align="left">正常</TableCell>
-                                        <TableCell align="left" onClick={() => {setGapDialog(true);setCurrent(0);}}>{gap}</TableCell>
+                                        <TableCell align="left">{gap}
+                                        <IconButton onClick={() => {setGapDialog(true);setCurrent(0);}} sx={{ml:3}}>
+                                            <Edit/></IconButton></TableCell>
                                         <TableCell align="left">
                                             {mode === 0 && (<Button sx={{ display:'flex', color:'blue'}} variant="outlined" onClick={()=>{setModeDialog(true);setCurrent(0);
                                                 }}>
@@ -534,7 +536,9 @@ export default function Busroute() {
                                         <TableCell align="left">8</TableCell>
                                         <TableCell align="left">4</TableCell>
                                         <TableCell align="left">低</TableCell>
-                                        <TableCell align="left" onClick={() => {setGapDialog(true);setCurrent(1);}}>{gap1}</TableCell>
+                                        <TableCell align="left">{gap1}
+                                            <IconButton onClick={() => {setGapDialog(true);setCurrent(1);}} sx={{ml:2.9}}>
+                                                <Edit/></IconButton></TableCell>
                                         <TableCell align="left">
                                             {mode1 === 0 && (<Button sx={{ display:'flex', color:'blue'}} variant="outlined" onClick={()=>{setModeDialog(true);setCurrent(1);
                                                 }}>
@@ -564,7 +568,10 @@ export default function Busroute() {
                                         <TableCell align="left">25</TableCell>
                                         <TableCell align="left">8</TableCell>
                                         <TableCell align="left">高</TableCell>
-                                        <TableCell align="left" onClick={() => {setGapDialog(true);setCurrent(2);}}>{gap2}</TableCell>
+                                        <TableCell align="left">{gap2}
+                                            <IconButton
+                                                onClick={() => {setGapDialog(true);setCurrent(2);}} sx={{ml:4}}>
+                                                <Edit/></IconButton></TableCell>
                                         <TableCell align="left">
                                             {mode2 === 0 && (<Button sx={{ display:'flex', color:'blue'}} variant="outlined" onClick={()=>{setModeDialog(true);setCurrent(2);
                                                 }}>
