@@ -15,7 +15,7 @@ import {
     Slide,
     TableContainer,
     Table,
-    TableBody, TableRow, TableCell, TablePagination, Grid, TextField, IconButton
+    TableBody, TableRow, TableCell, TablePagination, Grid, TextField
 } from '@mui/material';
 // components
 // import axios from "axios";
@@ -33,6 +33,7 @@ import {Edit} from "@mui/icons-material";
 import {forwardRef, useEffect, useState} from "react";
 import {LineLayer, PointLayer, Scene} from "@antv/l7";
 import {GaodeMap} from "@antv/l7-maps";
+import {faker} from "@faker-js/faker";
 import Page from '../components/Page';
 import {TmpListHead} from "../sections/@dashboard/user";
 import Scrollbar from "../components/Scrollbar";
@@ -366,7 +367,9 @@ export default function Busroute() {
                     fullWidth
                     scroll='paper'
             >
-                <DialogTitle>修改间距</DialogTitle>
+                <DialogTitle>推荐间距信息
+                    <Button onClick={()=>{setTmpValue(Number(faker.commerce.price(5, 30)));}} variant='outlined' sx={{ ml: 2 }}>系统推荐</Button>
+                </DialogTitle>
                 {/* eslint-disable-next-line react/jsx-no-bind */}
                 <DialogContent>
                     <Grid container spacing={2} sx={{ mt: 2 }}>
@@ -375,10 +378,11 @@ export default function Busroute() {
                             <TextField
                                 // autoFocus
                                 // eslint-disable-next-line no-nested-ternary,react/prop-types
-                                margin="dense"
+                                // margin="dense"
                                 label="请设置你要调整的线路间距"
                                 fullWidth
                                 variant="standard"
+                                value={tmpValue===0 ? '': tmpValue}
                                 onChange={(event)=>{
                                     setTmpValue(event.target.value);
                                 }}
@@ -391,18 +395,18 @@ export default function Busroute() {
                 <DialogActions>
                     <Button onClick={()=>{
                         setGapDialog(false);
+                        setTmpValue(0);
                         // setRoad([1]);
-                    }}>取消</Button>
+                    }}>取消修改</Button>
                     {/* eslint-disable-next-line react/jsx-no-bind */}
                     <Button onClick={()=>{
                         setGapDialog(false);
-                        if(current === 0)
-                            setGap(tmpValue);
-                        else if(current === 1)
-                            setGap1(tmpValue);
-                        else
-                            setGap2(tmpValue);
-                    }}>确认</Button>
+                        if(current === 0) setGap(tmpValue);
+                        else if(current === 1) setGap1(tmpValue);
+                        else setGap2(tmpValue);
+                        setTmpValue(0);
+
+                    }}>确认修改</Button>
                 </DialogActions>
             </Dialog>
             <Dialog open={modeDialog} onClose={()=>{
@@ -504,9 +508,8 @@ export default function Busroute() {
                                         <TableCell align="left">16</TableCell>
                                         <TableCell align="left">3</TableCell>
                                         <TableCell align="left">正常</TableCell>
-                                        <TableCell align="left">{gap}
-                                        <IconButton onClick={() => {setGapDialog(true);setCurrent(0);}} sx={{ml:3}}>
-                                            <Edit/></IconButton></TableCell>
+                                        <TableCell align="left">
+                                            <Button endIcon={<Edit/>} variant="outlined" onClick={() => {setGapDialog(true);setCurrent(0);}}>{gap}</Button></TableCell>
                                         <TableCell align="left">
                                             {mode === 0 && (<Button sx={{ display:'flex', color:'blue'}} variant="outlined" onClick={()=>{setModeDialog(true);setCurrent(0);
                                                 }}>
@@ -536,9 +539,7 @@ export default function Busroute() {
                                         <TableCell align="left">8</TableCell>
                                         <TableCell align="left">4</TableCell>
                                         <TableCell align="left">低</TableCell>
-                                        <TableCell align="left">{gap1}
-                                            <IconButton onClick={() => {setGapDialog(true);setCurrent(1);}} sx={{ml:2.9}}>
-                                                <Edit/></IconButton></TableCell>
+                                        <TableCell align="left"><Button endIcon={<Edit/>} variant="outlined" onClick={() => {setGapDialog(true);setCurrent(0);}}>{gap1}</Button></TableCell>
                                         <TableCell align="left">
                                             {mode1 === 0 && (<Button sx={{ display:'flex', color:'blue'}} variant="outlined" onClick={()=>{setModeDialog(true);setCurrent(1);
                                                 }}>
@@ -568,10 +569,7 @@ export default function Busroute() {
                                         <TableCell align="left">25</TableCell>
                                         <TableCell align="left">8</TableCell>
                                         <TableCell align="left">高</TableCell>
-                                        <TableCell align="left">{gap2}
-                                            <IconButton
-                                                onClick={() => {setGapDialog(true);setCurrent(2);}} sx={{ml:4}}>
-                                                <Edit/></IconButton></TableCell>
+                                        <TableCell align="left"><Button endIcon={<Edit/>} variant="outlined" onClick={() => {setGapDialog(true);setCurrent(0);}}>{gap2}</Button></TableCell>
                                         <TableCell align="left">
                                             {mode2 === 0 && (<Button sx={{ display:'flex', color:'blue'}} variant="outlined" onClick={()=>{setModeDialog(true);setCurrent(2);
                                                 }}>
