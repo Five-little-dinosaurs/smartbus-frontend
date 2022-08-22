@@ -205,7 +205,7 @@ export default function Busdetail() {
         }).catch((res)=>{
             console.log(res);
         })
-        const gps = {R: 120.19247000000001, Q: 35.951667};
+        const gps = {R: 120.30289566967772, Q: 36.0651380526019};
         const scene = new Scene({
             id: 'map',
             map: new GaodeMap({
