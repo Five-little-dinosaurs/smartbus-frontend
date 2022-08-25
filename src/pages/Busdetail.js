@@ -80,7 +80,7 @@ export default function Busdetail() {
                 const linesearch = new AMap.LineSearch({
                     pageIndex: 1, // 页码，默认值为1
                     pageSize: 1, // 单页显示结果条数，默认值为20，最大值为50
-                    city: '青岛', // 限定查询城市，可以是城市名（中文/中文全拼）、城市编码，默认值为『全国』
+                    city: '彭州', // 限定查询城市，可以是城市名（中文/中文全拼）、城市编码，默认值为『全国』
                     extensions: 'all' // 是否返回公交线路详细信息，默认值为『base』
                 });
 
@@ -205,7 +205,7 @@ export default function Busdetail() {
         }).catch((res)=>{
             console.log(res);
         })
-        const gps = {R: 120.30289566967772, Q: 36.0651380526019};
+        const gps = {R: 103.95811, Q: 30.99018};
         const scene = new Scene({
             id: 'map',
             map: new GaodeMap({
@@ -331,7 +331,7 @@ export default function Busdetail() {
                             const linesearch = new AMap.LineSearch({
                                 pageIndex: 1, // 页码，默认值为1
                                 pageSize: 1, // 单页显示结果条数，默认值为20，最大值为50
-                                city: '青岛', // 限定查询城市，可以是城市名（中文/中文全拼）、城市编码，默认值为『全国』
+                                city: '彭州', // 限定查询城市，可以是城市名（中文/中文全拼）、城市编码，默认值为『全国』
                                 extensions: 'all' // 是否返回公交线路详细信息，默认值为『base』
                             });
 
